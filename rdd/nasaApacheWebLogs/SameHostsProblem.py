@@ -1,4 +1,4 @@
-from pyspark import SparkContext
+from pyspark import SparkContext, SparkConf
 
 if __name__ == "__main__":
 
@@ -11,10 +11,21 @@ if __name__ == "__main__":
     Example output:
     vagrant.vf.mmc.com
     www-a1.proxy.aol.com
-    .....    
+    .....
 
     Keep in mind, that the original log files contains the following header lines.
     host    logname    time    method    url    response    bytes
 
     Make sure the head lines are removed in the resulting RDD.
     '''
+    conf = SparkConf().setAppName("unionLogs").setMaster("local[*]")
+    sc = SparkContext(conf = conf)
+
+    julyFirstLogs = sc.textFile("in/nasa_19950701.tsv").option("header","true")
+    augustFirstLogs = sc.textFile("in/nasa_19950801.tsv").option("header","true")
+
+	hosts1 = julyFirstLogs[0]
+	hosts2 = augustFirstLogs[0]
+
+	bothdays = hosts1.intersect(hosts2)
+	bothdays.saveAsTextFile("out/nasa_logs_same_hosts.csv")
