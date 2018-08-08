@@ -13,6 +13,7 @@ if __name__ == "__main__":
 
     data = sc.textFile("in/prime_nums.text")
     data = data.flatMap(lambda line:line.split(" ")).take(100)
+    data = data.filter(lambda number: number)
     data = data.map(lambda number: int(number))
     sum = data.reduce(lambda x, y: x + y)
     print("product is :{}".format(sum))
