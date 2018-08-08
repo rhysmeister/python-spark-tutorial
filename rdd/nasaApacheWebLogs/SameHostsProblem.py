@@ -1,5 +1,10 @@
 from pyspark import SparkContext, SparkConf
 
+def parse_data(line):
+    fields = line.split("\t")
+    # use 0 for column 1, 2 for column 2 and so on
+    return fields[0]
+
 if __name__ == "__main__":
 
 	'''
@@ -33,8 +38,8 @@ if __name__ == "__main__":
 	header = sc.parallelize([tagsheader])
 	augustFirstLogs = augustFirstLogs.subtract(header)
 
-	hosts1 = julyFirstLogs[0]
-	hosts2 = augustFirstLogs[0]
+	hosts1 = julyFirstLogs.map(parse_data)
+	hosts2 = augustFirstLogs.map(parse_data)
 
 	bothdays = hosts1.intersect(hosts2)
 	bothdays.saveAsTextFile("out/nasa_logs_same_hosts.csv")
