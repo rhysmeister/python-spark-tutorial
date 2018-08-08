@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     data = sc.textFile("in/prime_nums.text")
     data = data.flatMap(lambda line:line.split(" "))
-    data = sc.parallelize(data)
+    data = sc.parallelize(data.take(100))
     data = data.filter(lambda number: number)
     data = data.map(lambda number: int(number))
     sum = data.reduce(lambda x, y: x + y)
