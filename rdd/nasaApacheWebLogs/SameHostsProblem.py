@@ -41,5 +41,5 @@ if __name__ == "__main__":
 	hosts1 = julyFirstLogs.map(parse_data)
 	hosts2 = augustFirstLogs.map(parse_data)
 
-	bothdays = hosts1.intersect(hosts2)
+	bothdays = hosts1.intersection(hosts2)
 	bothdays.saveAsTextFile("out/nasa_logs_same_hosts.csv")
