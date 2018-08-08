@@ -12,7 +12,7 @@ if __name__ == "__main__":
     sc = SparkContext(conf = conf)
 
     data = sc.textFile("in/prime_nums.text")
-    data = data.flatMap(lambda line:line.split(" ")).take(100)
+    data = data.flatMap(lambda line:line.split(" "))
     data = sc.parallelize(data)
     data = data.filter(lambda number: number)
     data = data.map(lambda number: int(number))
