@@ -18,11 +18,11 @@ if __name__ == "__main__":
 
     Make sure the head lines are removed in the resulting RDD.
     '''
-    conf = SparkConf().setAppName("unionLogs").setMaster("local[*]")
-    sc = SparkContext(conf = conf)
+	conf = SparkConf().setAppName("unionLogs").setMaster("local[*]")
+	sc = SparkContext(conf = conf)
 
-    julyFirstLogs = sc.textFile("in/nasa_19950701.tsv").option("header","true")
-    augustFirstLogs = sc.textFile("in/nasa_19950801.tsv").option("header","true")
+	julyFirstLogs = sc.textFile("in/nasa_19950701.tsv").option("header","true")
+	augustFirstLogs = sc.textFile("in/nasa_19950801.tsv").option("header","true")
 
 	hosts1 = julyFirstLogs[0]
 	hosts2 = augustFirstLogs[0]
