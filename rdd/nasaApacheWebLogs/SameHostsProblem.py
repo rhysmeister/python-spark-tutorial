@@ -21,8 +21,17 @@ if __name__ == "__main__":
 	conf = SparkConf().setAppName("unionLogs").setMaster("local[*]")
 	sc = SparkContext(conf = conf)
 
-	julyFirstLogs = sc.textFile("in/nasa_19950701.tsv").option("header","true")
-	augustFirstLogs = sc.textFile("in/nasa_19950801.tsv").option("header","true")
+	julyFirstLogs = sc.textFile("in/nasa_19950701.tsv")
+
+	tagsheader = julyFirstLogs.first()
+	header = sc.parallelize([tagsheader])
+	julyFirstLogs = julyFirstLogs.subtract(header)
+
+	augustFirstLogs = sc.textFile("in/nasa_19950801.tsv")
+
+	tagsheader = augustFirstLogs.first()
+	header = sc.parallelize([tagsheader])
+	augustFirstLogs = augustFirstLogs.subtract(header)
 
 	hosts1 = julyFirstLogs[0]
 	hosts2 = augustFirstLogs[0]
