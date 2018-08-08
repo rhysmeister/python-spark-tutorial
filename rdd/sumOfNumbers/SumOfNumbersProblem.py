@@ -12,6 +12,6 @@ if __name__ == "__main__":
     sc = SparkContext(conf = conf)
 
     data = sc.textFile("in/prime_nums.text")
-    data.flatMap(lambda line:line.split(" ")).take(100)
-    sum = data.reduce(lambda x, y: x + y)
+    data = data.flatMap(lambda line:line.split(" ")).take(100)
+    sum = data.reduce(lambda x, y: (int)x + (int)y)
     print("product is :{}".format(sum))
