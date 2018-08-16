@@ -37,7 +37,7 @@ if __name__ == "__main__":
     sc = SparkContext(conf = conf)
 
     airportsRDD = sc.textFile("in/RealEstate.csv")
-    cleanedLines = lines.filter(lambda line: "Bedrooms" not in line)
+    cleanedLines = airportsRDD.filter(lambda line: "Bedrooms" not in line)
 
     housePricePairRdd = cleanedLines.map(lambda line: \
         (line.split(",")[3], AvgCount(1, float(line.split(",")[2]))))
