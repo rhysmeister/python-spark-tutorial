@@ -33,3 +33,23 @@ if __name__ == "__main__":
     3, 1 and 2 mean the number of bedrooms. 325000 means the average price of houses with 3 bedrooms is 325000.
 
     '''
+    conf = SparkConf().setAppName("AvgHousePrices").setMaster("local")
+    sc = SparkContext(conf = conf)
+
+    airportsRDD = sc.textFile("in/RealEstate.csv")
+    cleanedLines = lines.filter(lambda line: "Bedrooms" not in line)
+
+    housePricePairRdd = cleanedLines.map(lambda line: \
+        (line.split(",")[3], AvgCount(1, float(line.split(",")[2]))))
+
+    housePriceTotal = housePricePairRdd \
+        .reduceByKey(lambda x, y: AvgCount(x.count + y.count, x.total + y.total))
+
+    print("housePriceTotal: ")
+    for bedroom, avgCount in housePriceTotal.collect():
+        print("{} : ({}, {})".format(bedroom, avgCount.count, avgCount.total))
+
+    housePriceAvg = housePriceTotal.mapValues(lambda avgCount: avgCount.total / avgCount.count)
+    print("\nhousePriceAvg: ")
+    for bedroom, avg in housePriceAvg.collect():
+        print("{} : {}".format(bedroom, avg))
