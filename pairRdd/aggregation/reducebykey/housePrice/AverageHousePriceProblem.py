@@ -1,4 +1,5 @@
 from pyspark import SparkContext, SparkConf
+sys.path.insert(0, '.') # Needed for import to work
 from pairRdd.aggregation.reducebykey.housePrice.AvgCount import AvgCount
 
 if __name__ == "__main__":
